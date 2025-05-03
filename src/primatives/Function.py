@@ -3,13 +3,16 @@ from src.primatives.Node import Node
 
 
 class Function(ABC):
-    def __init__(self):
-        self.state = {}
+    @classmethod
+    def __call__(cls, *args: tuple[Node, ...]) -> Node:
+        return cls.forward(*args)
 
+    @staticmethod
     @abstractmethod
-    def forward(self, *args: list[Node]) -> Node:
+    def forward(*args: tuple[Node, ...]) -> Node:
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def backward(self, *args: list[Node]) -> Node:
+    def backward(*args: tuple[Node, ...]) -> Node:
         raise NotImplementedError

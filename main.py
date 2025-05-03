@@ -1,10 +1,14 @@
 from src.primatives import Node
+from src.functions import add
 import numpy as np
 
 
 def main():
-    node = Node(np.array(10))
-    print(node)
+    a = Node(np.array(10))
+    b = Node(np.array(20))
+
+    c = add(a, b)
+    print(c)
 
 
 if __name__ == "__main__":
