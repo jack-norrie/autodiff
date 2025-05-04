@@ -12,6 +12,7 @@ def main():
     e = add(b, d)
 
     e.backward()
+    print(e)
 
 
 if __name__ == "__main__":
