@@ -2,7 +2,7 @@ import typing
 import random
 
 from src.functions import add, square, sub, vec_dot, vec_add, div
-from src.nn.layers import Linear
+from src.nn.layers import Linear, Sequential
 from src.primatives import Vertex, Vector
 
 
@@ -41,7 +41,7 @@ def main():
     noise = [Vertex(random.gauss(0, 0.1)) for _ in range(n)]
     y = vec_add([vec_dot(beta, x[i]) for i in range(n)], noise)
 
-    model = Linear(m, 1)
+    model = Sequential([Linear(m, 1)])
 
     epochs = 100
     for i in range(1, epochs + 1):
@@ -59,8 +59,8 @@ def main():
         print(f"{i} / {epochs} - {loss_total=}")
 
     print(f"beta: {beta}")
-    print(f"W: {model.parameters['W']}")
-    print(f"b: {model.parameters['b']}")
+    print(f"W: {model.parameters['0']['W']}")
+    print(f"b: {model.parameters['0']['b']}")
 
 
 if __name__ == "__main__":
