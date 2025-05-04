@@ -1,7 +1,7 @@
 from typing import Callable, Self
 
 
-class Node:
+class Vertex:
     def __init__(
         self,
         value: float,

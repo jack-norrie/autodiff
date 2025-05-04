@@ -1,15 +1,15 @@
-from src.primatives import Node
+from src.primatives import Vertex
 from src.functions import add, mul, square
 
 
-def parabola(x: Node) -> Node:
-    v1 = add(x, Node(4.0))
+def parabola(x: Vertex) -> Vertex:
+    v1 = add(x, Vertex(4.0))
     v2 = square(v1)
     return v2
 
 
 def main():
-    x = Node(0.0)
+    x = Vertex(0.0)
     for i in range(20):
         y = parabola(x)
         print(f"{x=}")

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from src.primatives.Node import Node
+from src.primatives.Vertex import Vertex
 
 
 class Function(ABC):
     @classmethod
-    def __call__(cls, *args) -> Node:
+    def __call__(cls, *args) -> Vertex:
         z = cls.forward(*args)
 
         # Add paranets and backwards function for backprop
@@ -15,7 +15,7 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def forward(*args) -> Node:
+    def forward(*args) -> Vertex:
         raise NotImplementedError
 
     @staticmethod

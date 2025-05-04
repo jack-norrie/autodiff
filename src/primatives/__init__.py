@@ -1,2 +1,2 @@
-from .Node import Node
+from .Vertex import Vertex
 from .Function import Function
