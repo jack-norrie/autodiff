@@ -34,10 +34,10 @@ def opt(params: dict | list | Vertex, nu: float = 0.01) -> None:
 def main():
     random.seed(42)
     m = 5
-    n = 100
+    n = 1000
     x = [[Vertex(random.uniform(-1, 1)) for _ in range(m)] for _ in range(n)]
 
-    beta = [Vertex(random.uniform(-1, 1)) for _ in range(m)]
+    beta = [Vertex(random.gauss(-1, 1)) for _ in range(m)]
     noise = [Vertex(random.gauss(0, 0.1)) for _ in range(n)]
     y = vec_add([vec_dot(beta, x[i]) for i in range(n)], noise)
 
@@ -45,23 +45,22 @@ def main():
 
     epochs = 100
     for i in range(1, epochs + 1):
-        print(f"{i} / {epochs}")
-
-        loss = None
+        loss_total = 0
         for j in range(n):
             pred_j = model(x[j])[0]
-            if loss is None:
-                loss = loss_fn(pred_j, y[j])
-            else:
-                loss = add(loss, loss_fn(pred_j, y[j]))
-        loss = typing.cast(Vertex, loss)
-        loss = div(loss, Vertex(n))
-        print(f"{loss=}")
+            loss = loss_fn(pred_j, y[j])
+            loss = div(loss, Vertex(n))
+            loss_total += loss.value
 
-        loss.backward()
-        opt(model.parameters, 0.1)
+            loss.backward()
+            opt(model.parameters, 0.1)
+            loss.zero_grad()
 
-        loss.zero_grad()
+        print(f"{i} / {epochs} - {loss_total=}")
+
+    print(f"beta: {beta}")
+    print(f"W: {model.parameters['W']}")
+    print(f"b: {model.parameters['b']}")
 
 
 if __name__ == "__main__":
