@@ -24,7 +24,7 @@ class Mul(Function):
 
     @staticmethod
     def backward(x: Node, y: Node) -> tuple[np.ndarray, ...]:
-        return (x.value, x.value)
+        return (y.value, x.value)
 
 
 mul = Mul()

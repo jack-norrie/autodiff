@@ -35,9 +35,13 @@ class Node:
         return topo_sort[::-1]
 
     def backward(self):
+        # Set the top level node gradient to one, i.e. its gradient with respect to itself
+        self.grad = 1
+
         # Send gradients back in topological order,
         # such that all children send gradients back before parent is processed
         topo_sort = self.get_topo_sort()
         for u in topo_sort:
-            for v, node_grad in zip(u._parents, u._backward(*u._parents)):
+            node_grads = u._backward(*u._parents)
+            for v, node_grad in zip(u._parents, node_grads):
                 v.grad += u.grad * node_grad
