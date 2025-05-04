@@ -1,11 +1,10 @@
+import math
 import random
 import typing
 from abc import abstractmethod
 
-from src.functions import Function
-from src.functions import mat_mul, vec_add
-from src.nn.activation import relu
-from src.primatives import Matrix, Vector, Vertex
+from src.functions import Function, mat_mul, vec_add
+from src.primatives import Vector, Vertex
 
 
 class Component:
@@ -51,13 +50,11 @@ class Linear(Component):
 
         random.seed(seed)
         self._parameters["W"] = [
-            [Vertex(random.uniform(-1, 1)) for _ in range(in_dim)]
+            [Vertex(random.gauss(0, math.sqrt(2 / in_dim))) for _ in range(in_dim)]
             for _ in range(out_dim)
         ]
         if bias:
-            self._parameters["b"] = [
-                Vertex(random.uniform(-1, 1)) for _ in range(out_dim)
-            ]
+            self._parameters["b"] = [Vertex(0.0) for _ in range(out_dim)]
 
         self._activation = activation
 
