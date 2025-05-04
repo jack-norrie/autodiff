@@ -1,2 +1,2 @@
 from .Vertex import Vertex
-from .Function import Function
+from .types import Vector, Matrix
