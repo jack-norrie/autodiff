@@ -16,7 +16,7 @@ class Optimizer:
         self.nu = nu
 
     @abstractmethod
-    def init_opt_parameter(self) -> Any:
+    def init_opt_parameter(self) -> dict:
         raise NotImplementedError
 
     def init_opt_parameters(self):
@@ -73,8 +73,24 @@ class Optimizer:
 
 
 class SGD(Optimizer):
-    def init_opt_parameter(self) -> None:
-        return None
+    def init_opt_parameter(self) -> dict:
+        return {}
 
     def update(self, parameter: Vertex, opt_parameter: None) -> None:
         parameter.value -= self.nu * parameter.grad
+
+
+class MomentumSGD(Optimizer):
+    def __init__(
+        self, parameters: dict, nu: float = 0.01, momentum: float = 0.9
+    ) -> None:
+        super().__init__(parameters, nu)
+        self.momentum = momentum
+
+    def init_opt_parameter(self) -> dict:
+        return {"momentum": 0.0}
+
+    def update(self, parameter: Vertex, opt_parameter: dict) -> None:
+        delta = self.momentum * opt_parameter["momentum"] - self.nu * parameter.grad
+        parameter.value += delta
+        opt_parameter["momentum"] = delta
