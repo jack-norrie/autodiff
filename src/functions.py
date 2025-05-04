@@ -28,3 +28,16 @@ class Mul(Function):
 
 
 mul = Mul()
+
+
+class Square(Function):
+    @staticmethod
+    def forward(x: Node) -> Node:
+        return Node(x.value**2)
+
+    @staticmethod
+    def backward(x: Node) -> tuple[np.ndarray, ...]:
+        return (2 * x.value,)
+
+
+square = Square()

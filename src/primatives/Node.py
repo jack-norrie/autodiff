@@ -45,3 +45,16 @@ class Node:
             node_grads = u._backward(*u._parents)
             for v, node_grad in zip(u._parents, node_grads):
                 v.grad += u.grad * node_grad
+
+    def zero_grad(self):
+        seen = set()
+
+        def dfs(root: Self):
+            root.grad = 0
+            seen.add(root)
+
+            for parent in root._parents:
+                if parent not in seen:
+                    dfs(parent)
+
+        dfs(self)

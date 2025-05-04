@@ -1,22 +1,25 @@
 from src.primatives import Node
-from src.functions import add, mul
+from src.functions import add, mul, square
 import numpy as np
 
 
+def parabola(x: Node) -> Node:
+    v1 = add(x, Node(np.array(4.0)))
+    v2 = square(v1)
+    return v2
+
+
 def main():
-    a = Node(np.array(10))
-    b = Node(np.array(20))
-    c = mul(a, b)
+    x = Node(np.array(0.0))
+    for i in range(20):
+        y = parabola(x)
+        print(f"{x=}")
+        print(f"{y=}")
 
-    d = Node(np.array(50))
-    e = add(c, d)
-
-    e.backward()
-    print(a.grad)
-    print(b.grad)
-    print(c.grad)
-    print(d.grad)
-    print(e.grad)
+        y.backward()
+        x.value -= 0.1 * x.grad
+        y.zero_grad()
+        print("")
 
 
 if __name__ == "__main__":

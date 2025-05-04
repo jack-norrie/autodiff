@@ -5,7 +5,7 @@ import numpy as np
 
 class Function(ABC):
     @classmethod
-    def __call__(cls, *args: tuple[Node]) -> Node:
+    def __call__(cls, *args) -> Node:
         z = cls.forward(*args)
 
         # Add paranets and backwards function for backprop
@@ -16,10 +16,10 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def forward(*args: tuple[Node, ...]) -> Node:
+    def forward(*args) -> Node:
         raise NotImplementedError
 
     @staticmethod
     @abstractmethod
-    def backward(*args: tuple[Node, ...]) -> tuple[np.ndarray, ...]:
+    def backward(*args) -> tuple[np.ndarray, ...]:
         raise NotImplementedError
