@@ -1,1 +1,2 @@
-from .functions import add, mul, square, mat_mul, vec_add
+from .functions import add, mul, square, mat_mul, vec_add, sub
+from .Function import Function

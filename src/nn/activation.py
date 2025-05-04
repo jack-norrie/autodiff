@@ -1,4 +1,4 @@
-from src.primatives import Function
+from src.functions import Function
 from src.primatives import Vertex
 
 

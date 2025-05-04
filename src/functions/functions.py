@@ -1,6 +1,6 @@
 import typing
 
-from src.functions.functions import Function
+from src.functions.Function import Function
 from src.primatives import Vertex, Matrix, Vector
 
 
@@ -16,6 +16,20 @@ class Add(Function):
 
 
 add = Add()
+
+
+class Sub(Function):
+    @staticmethod
+    def forward(x: Vertex, y: Vertex) -> Vertex:
+        z = Vertex(x.value - y.value)
+        return z
+
+    @staticmethod
+    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
+        return (1.0, -1.0)
+
+
+sub = Sub()
 
 
 class Mul(Function):
@@ -64,7 +78,7 @@ def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
             C[i][j] = z
 
     if len(B[0]) == 1:
-        C = [row[0] for row in Matrix]
+        C = [row[0] for row in C]
         C = typing.cast(Vector, C)
     else:
         C = typing.cast(Matrix, C)
@@ -72,7 +86,7 @@ def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
 
 
 def vec_add(u: Vector, v: Vector) -> Vector:
-    assert len(u) == len(v), "Incompatible shapes"
+    assert len(u) == len(v), f"Incompatible shapes: {len(u)} and {len(v)}"
     n = len(u)
 
     w = [None for _ in range(n)]

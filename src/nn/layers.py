@@ -11,6 +11,9 @@ class Layer:
     def __init__(self, *args, **kwargs) -> None:
         self._paramaters: dict[str, Vertex | Vector | Matrix] = {}
 
+    def __call__(self, x: Vector) -> Vector:
+        return self.forward(x)
+
     @property
     def paramaters(self) -> dict:
         return self._paramaters
@@ -31,7 +34,7 @@ class Linear(Layer):
         }
         if bias:
             self._paramaters["b"] = [
-                Vertex(random.uniform(-1, 1)) for _ in range(in_dim)
+                Vertex(random.uniform(-1, 1)) for _ in range(out_dim)
             ]
 
     def forward(self, x: Vector) -> Vector:
