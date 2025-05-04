@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 from src.functions import div, square, sub, vec_add, vec_dot
 from src.nn import Linear, Sequential, relu
+from src.nn.optim import SGD
 from src.primatives import Vertex
 
 
@@ -24,6 +25,8 @@ def linear_data_gen_experiment():
 
     model = Sequential([Linear(m, 1)])
 
+    opt = SGD(model.parameters, nu=0.01)
+
     epochs = 100
     for i in range(1, epochs + 1):
         loss_total = 0
@@ -34,7 +37,7 @@ def linear_data_gen_experiment():
             loss_total += loss.value
 
             loss.backward()
-            opt(model.parameters, 0.1)
+            opt.step()
             loss.zero_grad()
 
         print(f"{i} / {epochs} - {loss_total=}")
@@ -68,6 +71,8 @@ def non_linear_data_gen_experiment():
         ]
     )
 
+    opt = SGD(model.parameters, nu=0.01)
+
     epochs = 100
     for i in range(1, epochs + 1):
         loss_total = 0
@@ -78,7 +83,7 @@ def non_linear_data_gen_experiment():
             loss_total += loss.value
 
             loss.backward()
-            opt(model.parameters, 0.1)
+            opt.step()
             loss.zero_grad()
 
         print(f"{i} / {epochs} - {loss_total=}")
@@ -129,7 +134,8 @@ def non_linear_data_gen_experiment():
 
 
 def main():
-    non_linear_data_gen_experiment()
+    linear_data_gen_experiment()
+    # non_linear_data_gen_experiment()
 
 
 if __name__ == "__main__":

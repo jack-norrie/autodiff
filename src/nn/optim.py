@@ -51,7 +51,7 @@ class Optimizer:
         return dfs(self.parameters)
 
     @abstractmethod
-    def update(self, parameter: Vertex, opt_parameter: dict) -> None:
+    def update(self, parameter: Vertex, opt_parameter) -> None:
         raise NotImplementedError
 
     def step(self):
@@ -62,11 +62,11 @@ class Optimizer:
             elif isinstance(parameters, list) and isinstance(opt_parameters, list):
                 for p, q in zip(parameters, opt_parameters):
                     opt(p, q)
-            elif isinstance(parameters, Vertex) and isinstance(opt_parameters, dict):
+            elif isinstance(parameters, Vertex):
                 self.update(parameters, opt_parameters)
             else:
                 raise ValueError(
-                    "Parmas/Optimizer-Params must have a matching nested structure (dicts and lists) of Vertex instanceces"
+                    f"Parmas/Optimizer-Params must have a matching nested structure (dicts and lists) of Vertex instanceces - got {type(parameters)} - {type(opt_parameters)}"
                 )
 
         opt(self.parameters, self.opt_parameters)
