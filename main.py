@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from src.functions import div, square, sub, vec_add, vec_dot
 from src.nn import Linear, Sequential, relu
-from src.nn.optim import SGD, MomentumSGD
+from src.nn.optim import SGD, MomentumSGD, Adam
 from src.primatives import Vertex
 
 
@@ -25,7 +25,7 @@ def linear_data_gen_experiment():
 
     model = Sequential([Linear(m, 1)])
 
-    opt = MomentumSGD(model.parameters, nu=0.01, momentum=0.9)
+    opt = Adam(model.parameters, nu=0.01, beta_1=0.9, beta_2=0.9)
 
     epochs = 100
     for i in range(1, epochs + 1):
@@ -73,7 +73,7 @@ def non_linear_data_gen_experiment():
 
     opt = MomentumSGD(model.parameters, nu=0.1, momentum=0.9)
 
-    epochs = 100
+    epochs = 1000
     for i in range(1, epochs + 1):
         loss_total = 0
         for j in range(n):

@@ -1,10 +1,8 @@
-from abc import abstractmethod
+import math
 import typing
-
-from copy import deepcopy
+from abc import abstractmethod
 
 from src.primatives import Vertex
-from typing import Any
 
 
 class Optimizer:
@@ -94,3 +92,66 @@ class MomentumSGD(Optimizer):
         delta = self.momentum * opt_parameter["momentum"] - self.nu * parameter.grad
         parameter.value += delta
         opt_parameter["momentum"] = delta
+
+
+class AdaGrad(Optimizer):
+    def init_opt_parameter(self) -> dict:
+        return {"scale": 0.0}
+
+    def update(self, parameter: Vertex, opt_parameter: dict) -> None:
+        g = parameter.grad
+        opt_parameter["scale"] += g**2
+        delta = -self.nu * g / (math.sqrt(opt_parameter["scale"]) + 1e-8)
+        parameter.value += delta
+
+
+class RMSProp(Optimizer):
+    def __init__(self, parameters: dict, nu: float = 0.01, beta: float = 0.9) -> None:
+        super().__init__(parameters, nu)
+        self.beta = beta
+
+    def init_opt_parameter(self) -> dict:
+        return {"scale": 0.0}
+
+    def update(self, parameter: Vertex, opt_parameter: dict) -> None:
+        g = parameter.grad
+        opt_parameter["scale"] = (
+            self.beta * opt_parameter["scale"] + (1 - self.beta) * g**2
+        )
+        delta = -self.nu * g / (math.sqrt(opt_parameter["scale"]) + 1e-8)
+        parameter.value += delta
+
+
+class Adam(Optimizer):
+    def __init__(
+        self,
+        parameters: dict,
+        nu: float = 0.01,
+        beta_1: float = 0.9,
+        beta_2: float = 0.9,
+    ) -> None:
+        super().__init__(parameters, nu)
+        self.beta_1 = beta_1
+        self.beta_2 = beta_2
+        self.t = 1
+
+    def init_opt_parameter(self) -> dict:
+        return {"moment_1": 0.0, "moment_2": 0.0}
+
+    def update(self, parameter: Vertex, opt_parameter: dict) -> None:
+        g = parameter.grad
+
+        opt_parameter["moment_1"] = (
+            self.beta_1 * opt_parameter["moment_1"] + (1 - self.beta_1) * g
+        )
+        opt_parameter["moment_2"] = (
+            self.beta_2 * opt_parameter["moment_2"] + (1 - self.beta_2) * g**2
+        )
+
+        m1 = opt_parameter["moment_1"] / (1 - self.beta_1**self.t)
+        m2 = opt_parameter["moment_2"] / (1 - self.beta_2**self.t)
+
+        delta = -self.nu * m1 / (math.sqrt(m2) + 1e-8)
+
+        parameter.value += delta
+        self.t += 1
