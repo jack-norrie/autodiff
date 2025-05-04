@@ -12,6 +12,7 @@ class Node:
         self.value = value
         self.grad = 0
 
+        # Implementation detials for backpropogation
         self._parents = tuple() if _parents is None else _parents
         self._backward = lambda: 0 if _backward is None else _backward
 
@@ -34,7 +35,8 @@ class Node:
         return topo_sort[::-1]
 
     def backward(self):
+        # Send gradients back in topological order,
+        # such that all children send gradients back before parent is processed
         topo_sort = self.get_topo_sort()
-
         for v in topo_sort:
             v._backward()
