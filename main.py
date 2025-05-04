@@ -1,16 +1,15 @@
-from src.primatives import Vertex
-from src.functions import add, mul, square, sub
+import typing
+import random
+
+from src.functions import add, square, sub, vec_dot, vec_add, div
 from src.nn.layers import Linear
+from src.primatives import Vertex, Vector
 
 
 def parabola(x: Vertex) -> Vertex:
     v1 = add(x, Vertex(4.0))
     v2 = square(v1)
     return v2
-
-
-def network(W, b, x):
-    return linear(W, b, x)[0]
 
 
 def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
@@ -33,23 +32,36 @@ def opt(params: dict | list | Vertex, nu: float = 0.01) -> None:
 
 
 def main():
-    x = [Vertex(0.0) for _ in range(10)]
-    y = Vertex(1)
+    random.seed(42)
+    m = 5
+    n = 100
+    x = [[Vertex(random.uniform(-1, 1)) for _ in range(m)] for _ in range(n)]
 
-    model = Linear(10, 1)
+    beta = [Vertex(random.uniform(-1, 1)) for _ in range(m)]
+    noise = [Vertex(random.gauss(0, 0.1)) for _ in range(n)]
+    y = vec_add([vec_dot(beta, x[i]) for i in range(n)], noise)
 
-    for i in range(100):
-        y_pred = model(x)[0]
-        print(f"{y_pred=}")
+    model = Linear(m, 1)
 
-        loss = loss_fn(y_pred, y)
+    epochs = 100
+    for i in range(1, epochs + 1):
+        print(f"{i} / {epochs}")
+
+        loss = None
+        for j in range(n):
+            pred_j = model(x[j])[0]
+            if loss is None:
+                loss = loss_fn(pred_j, y[j])
+            else:
+                loss = add(loss, loss_fn(pred_j, y[j]))
+        loss = typing.cast(Vertex, loss)
+        loss = div(loss, Vertex(n))
         print(f"{loss=}")
 
         loss.backward()
-        opt(model.paramaters, 0.1)
+        opt(model.parameters, 0.1)
 
         loss.zero_grad()
-        print("")
 
 
 if __name__ == "__main__":

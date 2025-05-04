@@ -46,6 +46,20 @@ class Mul(Function):
 mul = Mul()
 
 
+class Div(Function):
+    @staticmethod
+    def forward(x: Vertex, y: Vertex) -> Vertex:
+        z = Vertex(x.value / y.value)
+        return z
+
+    @staticmethod
+    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
+        return (1 / y.value, -x.value / (y.value**2))
+
+
+div = Div()
+
+
 class Square(Function):
     @staticmethod
     def forward(x: Vertex) -> Vertex:
@@ -59,13 +73,24 @@ class Square(Function):
 square = Square()
 
 
+def vec_dot(u: Vector, v: Vector) -> Vertex:
+    assert len(u) == len(v), f"Incompatible shapes: {len(u)} and {len(v)}"
+    n = len(u)
+
+    w = mul(u[0], v[0])
+    for i in range(1, n):
+        w = add(w, mul(u[i], v[i]))
+
+    return w
+
+
 def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
     if isinstance(B[0], Vertex):
         B = typing.cast(Vector, B)
         B = [[v] for v in B]
     B = typing.cast(Matrix, B)
 
-    assert len(A[0]) == len(B), "Incompatible shapes"
+    assert len(A[0]) == len(B), f"Incompatible shapes: {len(A[0])} and {len(B)}"
     m = len(A)
     n = len(B[0])
 

@@ -9,14 +9,14 @@ from src.primatives import Matrix, Vector, Vertex
 
 class Layer:
     def __init__(self, *args, **kwargs) -> None:
-        self._paramaters: dict[str, Vertex | Vector | Matrix] = {}
+        self._parameters: dict[str, Vertex | Vector | Matrix] = {}
 
     def __call__(self, x: Vector) -> Vector:
         return self.forward(x)
 
     @property
-    def paramaters(self) -> dict:
-        return self._paramaters
+    def parameters(self) -> dict:
+        return self._parameters
 
     @abstractmethod
     def forward(self, x: Vector) -> Vector:
@@ -26,22 +26,22 @@ class Layer:
 class Linear(Layer):
     def __init__(self, in_dim, out_dim, bias: bool = True, seed: int = 42) -> None:
         random.seed(seed)
-        self._paramaters = {
+        self._parameters = {
             "W": [
                 [Vertex(random.uniform(-1, 1)) for _ in range(in_dim)]
                 for _ in range(out_dim)
             ],
         }
         if bias:
-            self._paramaters["b"] = [
+            self._parameters["b"] = [
                 Vertex(random.uniform(-1, 1)) for _ in range(out_dim)
             ]
 
     def forward(self, x: Vector) -> Vector:
-        z = mat_mul(self.paramaters["W"], x)
+        z = mat_mul(self.parameters["W"], x)
         z = typing.cast(Vector, z)
 
-        if "b" in self.paramaters:
-            z = vec_add(z, self.paramaters["b"])
+        if "b" in self.parameters:
+            z = vec_add(z, self.parameters["b"])
 
         return z
