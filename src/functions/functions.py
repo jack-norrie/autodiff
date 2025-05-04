@@ -1,3 +1,5 @@
+import typing
+
 from src.functions.functions import Function
 from src.primatives import Vertex, Matrix, Vector
 
@@ -43,7 +45,12 @@ class Square(Function):
 square = Square()
 
 
-def mat_mul(A: Matrix, B: Matrix):
+def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
+    if isinstance(B[0], Vertex):
+        B = typing.cast(Vector, B)
+        B = [[v] for v in B]
+    B = typing.cast(Matrix, B)
+
     assert len(A[0]) == len(B), "Incompatible shapes"
     m = len(A)
     n = len(B[0])
@@ -56,15 +63,21 @@ def mat_mul(A: Matrix, B: Matrix):
                 z = add(z, mul(A[i][k], B[k][j]))
             C[i][j] = z
 
+    if len(B[0]) == 1:
+        C = [row[0] for row in Matrix]
+        C = typing.cast(Vector, C)
+    else:
+        C = typing.cast(Matrix, C)
     return C
 
 
-def vec_add(u: Vector, v: Vector):
+def vec_add(u: Vector, v: Vector) -> Vector:
     assert len(u) == len(v), "Incompatible shapes"
     n = len(u)
 
     w = [None for _ in range(n)]
     for i in range(n):
         w[i] = add(u[i], v[i])
+    w = typing.cast(Vector, w)
 
     return w
