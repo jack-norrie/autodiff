@@ -2,7 +2,7 @@ import typing
 import random
 
 from src.functions import add, square, sub, vec_dot, vec_add, div
-from src.nn.layers import Linear, Sequential
+from src.nn import Linear, Sequential
 from src.primatives import Vertex, Vector
 
 
