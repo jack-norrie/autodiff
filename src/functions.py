@@ -8,7 +8,7 @@ class Add(Function):
         return z
 
     @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, ...]:
+    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
         return (1.0, 1.0)
 
 
@@ -22,7 +22,7 @@ class Mul(Function):
         return z
 
     @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, ...]:
+    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
         return (y.value, x.value)
 
 
@@ -35,7 +35,7 @@ class Square(Function):
         return Vertex(x.value**2)
 
     @staticmethod
-    def backward(x: Vertex) -> tuple[float, ...]:
+    def backward(x: Vertex) -> tuple[float]:
         return (2 * x.value,)
 
 
