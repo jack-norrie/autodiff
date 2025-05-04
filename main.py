@@ -1,10 +1,11 @@
-import typing
-import random
 import math
+import random
 
-from src.functions import add, square, sub, vec_dot, vec_add, div
+import matplotlib.pyplot as plt
+
+from src.functions import div, square, sub, vec_add, vec_dot
 from src.nn import Linear, Sequential, relu
-from src.primatives import Vertex, Vector
+from src.primatives import Vertex
 
 
 def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
@@ -64,14 +65,25 @@ def non_linear_data_gen_experiment():
     x = [[Vertex(random.uniform(-1, 1))] for i in range(n)]
 
     def f(x: float) -> float:
-        return max(-x, math.exp(x) * math.sin(x))
+        if x < 0:
+            return -3 * (x**2) - 2
+        else:
+            return math.exp(1.5 * x) * math.sin(10 * x)
 
     y = [Vertex(f(x[i][0].value)) for i in range(n)]
     noise = [Vertex(random.gauss(0, 0.1)) for _ in range(n)]
     y = vec_add(y, noise)
 
-    h = 10
-    model = Sequential([Linear(1, h, activation=relu), Linear(h, 1)])
+    h = 100
+    model = Sequential(
+        [
+            Linear(1, h, activation=relu, seed=1),
+            Linear(h, h, activation=relu, seed=2),
+            Linear(h, h, activation=relu, seed=3),
+            Linear(h, h, activation=relu, seed=4),
+            Linear(h, 1, seed=5),
+        ]
+    )
 
     epochs = 100
     for i in range(1, epochs + 1):
@@ -87,6 +99,50 @@ def non_linear_data_gen_experiment():
             loss.zero_grad()
 
         print(f"{i} / {epochs} - {loss_total=}")
+
+    plt.figure(figsize=(10, 6))
+    plt.style.use("seaborn-v0_8-notebook")
+
+    # Plot raw data points
+    xs_data = [x[i][0].value for i in range(n)]
+    ys_data = [y[i].value for i in range(n)]
+    plt.scatter(
+        xs_data, ys_data, alpha=0.2, color="#1f77b4", label="Training Data", s=10
+    )
+
+    # Generate samples from target function
+    n_samples = 1000
+    xs_curve = [2 * (x / (n_samples - 1)) - 1 for x in range(0, n_samples)]
+    ys_true = [f(x) for x in xs_curve]
+    plt.plot(
+        xs_curve,
+        ys_true,
+        alpha=1,
+        color="#ff7f0e",
+        linewidth=2,
+        label="True Function",
+        ls="--",
+    )
+
+    # Plot the model's predictions
+    ys_pred = [model([Vertex(x)])[0].value for x in xs_curve]
+    plt.plot(
+        xs_curve,
+        ys_pred,
+        alpha=1,
+        color="#2ca02c",
+        linewidth=2,
+        label="Estimated Function",
+    )
+
+    plt.title("MLP Function Approximation", fontsize=16)
+    plt.xlabel("Input (x)", fontsize=12)
+    plt.ylabel("Output (y)", fontsize=12)
+
+    plt.legend(loc="best", fontsize=10)
+
+    plt.tight_layout()
+    plt.show()
 
 
 def main():
