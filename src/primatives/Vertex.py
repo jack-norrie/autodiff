@@ -16,7 +16,7 @@ class Vertex:
         self._backward = lambda *n: (0,) if _backward is None else _backward
 
     def __repr__(self) -> str:
-        return f"Node({repr(self.value)})"
+        return f"{type(self).__name__}({repr(self.value)})"
 
     def _get_topo_sort(self, topo_sort: list[Self], seen: set[Self]) -> None:
         seen.add(self)
