@@ -12,21 +12,6 @@ def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
     return square(sub(y_pred, y))
 
 
-def opt(params: dict | list | Vertex, nu: float = 0.01) -> None:
-    if isinstance(params, dict):
-        for p in params.values():
-            opt(p, nu)
-    elif isinstance(params, list):
-        for p in params:
-            opt(p, nu)
-    elif isinstance(params, Vertex):
-        params.value -= nu * params.grad
-    else:
-        raise ValueError(
-            "Parmas must be nested structure (dicts and lists) of Vertex instanceces"
-        )
-
-
 def linear_data_gen_experiment():
     random.seed(42)
     m = 5
@@ -79,8 +64,6 @@ def non_linear_data_gen_experiment():
         [
             Linear(1, h, activation=relu, seed=1),
             Linear(h, h, activation=relu, seed=2),
-            Linear(h, h, activation=relu, seed=3),
-            Linear(h, h, activation=relu, seed=4),
             Linear(h, 1, seed=5),
         ]
     )
