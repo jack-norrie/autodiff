@@ -7,7 +7,7 @@ class ReLU(Function):
         return Vertex(max(0, x.value))
 
     def backward(x: Vertex) -> tuple[float]:
-        return Vertex(1.0 if x.value >= 0.0 else 0.0)
+        return (1.0 if x.value >= 0.0 else 0.0,)
 
 
 relu = ReLU()

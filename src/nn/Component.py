@@ -2,6 +2,7 @@ import random
 import typing
 from abc import abstractmethod
 
+from src.functions import Function
 from src.functions import mat_mul, vec_add
 from src.nn.activation import relu
 from src.primatives import Matrix, Vector, Vertex
@@ -38,7 +39,14 @@ class Sequential(Component):
 
 
 class Linear(Component):
-    def __init__(self, in_dim, out_dim, bias: bool = True, seed: int = 42) -> None:
+    def __init__(
+        self,
+        in_dim,
+        out_dim,
+        bias: bool = True,
+        activation: Function | None = None,
+        seed: int = 42,
+    ) -> None:
         super().__init__()
 
         random.seed(seed)
@@ -51,11 +59,16 @@ class Linear(Component):
                 Vertex(random.uniform(-1, 1)) for _ in range(out_dim)
             ]
 
+        self._activation = activation
+
     def forward(self, x: Vector) -> Vector:
         z = mat_mul(self.parameters["W"], x)
         z = typing.cast(Vector, z)
 
         if "b" in self.parameters:
             z = vec_add(z, self.parameters["b"])
+
+        if self._activation is not None:
+            z = [self._activation(v) for v in z]
 
         return z
