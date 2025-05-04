@@ -7,14 +7,14 @@ class Node:
         self,
         value: np.ndarray,
         _parents: tuple[Self, ...] | None = None,
-        _backward: Callable[[], tuple[np.ndarray, ...]] | None = None,
+        _backward: Callable[[tuple[Self, ...]], tuple[np.ndarray, ...]] | None = None,
     ):
         self.value = value
         self.grad = 0
 
         # Implementation detials for backpropogation - _backward produces node wise gradients per _parent
         self._parents = tuple() if _parents is None else _parents
-        self._backward = lambda: (np.array(0.0),) if _backward is None else _backward
+        self._backward = lambda *n: (np.array(0),) if _backward is None else _backward
 
     def __repr__(self) -> str:
         return f"Node({repr(self.value)})"
@@ -39,5 +39,5 @@ class Node:
         # such that all children send gradients back before parent is processed
         topo_sort = self.get_topo_sort()
         for u in topo_sort:
-            for v, node_grad in zip(u._parents, u._backward()):
+            for v, node_grad in zip(u._parents, u._backward(*u._parents)):
                 v.grad += u.grad * node_grad

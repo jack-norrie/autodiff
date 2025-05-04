@@ -21,5 +21,5 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def backward() -> tuple[np.ndarray, ...]:
+    def backward(*args: tuple[Node, ...]) -> tuple[np.ndarray, ...]:
         raise NotImplementedError
