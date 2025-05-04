@@ -1,5 +1,4 @@
 from src.primatives import Function, Node
-import numpy as np
 
 
 class Add(Function):
@@ -9,8 +8,8 @@ class Add(Function):
         return z
 
     @staticmethod
-    def backward(x: Node, y: Node) -> tuple[np.ndarray, ...]:
-        return (np.array(1.0), np.array(1.0))
+    def backward(x: Node, y: Node) -> tuple[float, ...]:
+        return (1.0, 1.0)
 
 
 add = Add()
@@ -23,7 +22,7 @@ class Mul(Function):
         return z
 
     @staticmethod
-    def backward(x: Node, y: Node) -> tuple[np.ndarray, ...]:
+    def backward(x: Node, y: Node) -> tuple[float, ...]:
         return (y.value, x.value)
 
 
@@ -36,7 +35,7 @@ class Square(Function):
         return Node(x.value**2)
 
     @staticmethod
-    def backward(x: Node) -> tuple[np.ndarray, ...]:
+    def backward(x: Node) -> tuple[float, ...]:
         return (2 * x.value,)
 
 

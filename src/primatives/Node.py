@@ -1,20 +1,19 @@
-import numpy as np
 from typing import Callable, Self
 
 
 class Node:
     def __init__(
         self,
-        value: np.ndarray,
+        value: float,
         _parents: tuple[Self, ...] | None = None,
-        _backward: Callable[[tuple[Self, ...]], tuple[np.ndarray, ...]] | None = None,
+        _backward: Callable[[tuple[Self, ...]], tuple[float, ...]] | None = None,
     ):
         self.value = value
         self.grad = 0
 
         # Implementation detials for backpropogation - _backward produces node wise gradients per _parent
         self._parents = tuple() if _parents is None else _parents
-        self._backward = lambda *n: (np.array(0),) if _backward is None else _backward
+        self._backward = lambda *n: (0,) if _backward is None else _backward
 
     def __repr__(self) -> str:
         return f"Node({repr(self.value)})"

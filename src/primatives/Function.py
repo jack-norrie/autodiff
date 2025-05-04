@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from src.primatives.Node import Node
-import numpy as np
 
 
 class Function(ABC):
@@ -21,5 +20,5 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def backward(*args) -> tuple[np.ndarray, ...]:
+    def backward(*args) -> tuple[float, ...]:
         raise NotImplementedError
