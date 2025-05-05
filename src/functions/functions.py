@@ -1,7 +1,7 @@
 import typing
 
 from src.functions.Function import Function
-from src.primatives import Vertex, Matrix, Vector
+from src.primitives import Vertex, Matrix, Vector
 
 
 class Add(Function):

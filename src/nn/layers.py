@@ -4,7 +4,7 @@ from abc import abstractmethod
 
 from src.functions import mat_mul, vec_add
 from src.nn.activation import relu
-from src.primatives import Matrix, Vector, Vertex
+from src.primitives import Matrix, Vector, Vertex
 
 
 class Component:

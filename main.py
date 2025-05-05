@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from src.functions import div, square, sub, vec_add, vec_dot
 from src.nn import Linear, Sequential, relu
 from src.nn.optim import SGD, MomentumSGD, Adam
-from src.primatives import Vertex
+from src.primitives import Vertex
 
 
 def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
@@ -134,8 +134,8 @@ def non_linear_data_gen_experiment():
 
 
 def main():
-    # linear_data_gen_experiment()
-    non_linear_data_gen_experiment()
+    linear_data_gen_experiment()
+    # non_linear_data_gen_experiment()
 
 
 if __name__ == "__main__":

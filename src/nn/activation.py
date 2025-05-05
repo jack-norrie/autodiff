@@ -1,5 +1,5 @@
 from src.functions import Function
-from src.primatives import Vertex
+from src.primitives import Vertex
 
 
 class ReLU(Function):

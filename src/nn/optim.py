@@ -2,7 +2,7 @@ import math
 import typing
 from abc import abstractmethod
 
-from src.primatives import Vertex
+from src.primitives import Vertex
 
 
 class Optimizer:

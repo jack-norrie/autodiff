@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from src.primatives.Vertex import Vertex
+from src.primitives.Vertex import Vertex
 
 
 class Function(ABC):

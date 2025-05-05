@@ -4,7 +4,7 @@ import typing
 from abc import abstractmethod
 
 from src.functions import Function, mat_mul, vec_add
-from src.primatives import Vector, Vertex
+from src.primitives import Vector, Vertex
 
 
 class Component:
