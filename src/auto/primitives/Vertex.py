@@ -1,4 +1,6 @@
+import math
 from typing import Callable, Self
+
 from src.auto.Function import Function
 
 
@@ -63,7 +65,19 @@ class Vertex:
         return add(self, other)
 
     def __sub__(self, other: Self) -> Self:
-        return add(self, other)
+        return sub(self, other)
+
+    def __mul__(self, other: Self) -> Self:
+        return mul(self, other)
+
+    def __truediv__(self, other: Self) -> Self:
+        return div(self, other)
+
+    def __pow__(self, other: Self) -> Self:
+        return pow(self, other)
+
+    def __neg__(self) -> Self:
+        return neg(self)
 
 
 class Add(Function):
@@ -122,14 +136,14 @@ class Div(Function):
 div = Div()
 
 
-class Square(Function):
+class Neg(Function):
     @staticmethod
     def forward(x: Vertex) -> Vertex:
-        return Vertex(x.value**2)
+        return Vertex(-x.value)
 
     @staticmethod
     def backward(x: Vertex) -> tuple[float]:
-        return (2 * x.value,)
+        return (-1.0,)
 
 
-square = Square()
+neg = Neg()
