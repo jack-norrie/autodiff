@@ -1,5 +1,5 @@
 from typing import Callable, Self
-from src.Function import Function
+from src.auto.Function import Function
 
 
 class Vertex:
@@ -18,9 +18,6 @@ class Vertex:
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}({repr(self.value)})"
-
-    def __add__(self, other: Self) -> Self:
-        return add(self, other)
 
     def _get_topo_sort(self, topo_sort: list[Self], seen: set[Self]) -> None:
         seen.add(self)
@@ -61,6 +58,12 @@ class Vertex:
                     dfs(parent)
 
         dfs(self)
+
+    def __add__(self, other: Self) -> Self:
+        return add(self, other)
+
+    def __sub__(self, other: Self) -> Self:
+        return add(self, other)
 
 
 class Add(Function):
