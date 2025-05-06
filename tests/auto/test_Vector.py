@@ -1,4 +1,4 @@
-from src.auto.primitives.Vertex import Vertex
+from src.auto.Vertex import Vertex
 import pytest
 
 

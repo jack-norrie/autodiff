@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import typing
 
 if typing.TYPE_CHECKING:
-    from src.primitives.Vertex import Vertex
+    from src.auto.Vertex import Vertex
 
 
 class Function(ABC):
