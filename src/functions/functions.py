@@ -1,76 +1,7 @@
 import typing
 
-from src.functions.Function import Function
+from src.Function import Function
 from src.primitives import Vertex, Matrix, Vector
-
-
-class Add(Function):
-    @staticmethod
-    def forward(x: Vertex, y: Vertex) -> Vertex:
-        z = Vertex(x.value + y.value)
-        return z
-
-    @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
-        return (1.0, 1.0)
-
-
-add = Add()
-
-
-class Sub(Function):
-    @staticmethod
-    def forward(x: Vertex, y: Vertex) -> Vertex:
-        z = Vertex(x.value - y.value)
-        return z
-
-    @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
-        return (1.0, -1.0)
-
-
-sub = Sub()
-
-
-class Mul(Function):
-    @staticmethod
-    def forward(x: Vertex, y: Vertex) -> Vertex:
-        z = Vertex(x.value * y.value)
-        return z
-
-    @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
-        return (y.value, x.value)
-
-
-mul = Mul()
-
-
-class Div(Function):
-    @staticmethod
-    def forward(x: Vertex, y: Vertex) -> Vertex:
-        z = Vertex(x.value / y.value)
-        return z
-
-    @staticmethod
-    def backward(x: Vertex, y: Vertex) -> tuple[float, float]:
-        return (1 / y.value, -x.value / (y.value**2))
-
-
-div = Div()
-
-
-class Square(Function):
-    @staticmethod
-    def forward(x: Vertex) -> Vertex:
-        return Vertex(x.value**2)
-
-    @staticmethod
-    def backward(x: Vertex) -> tuple[float]:
-        return (2 * x.value,)
-
-
-square = Square()
 
 
 def vec_dot(u: Vector, v: Vector) -> Vertex:

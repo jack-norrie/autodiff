@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
-from src.primitives.Vertex import Vertex
+import typing
+
+if typing.TYPE_CHECKING:
+    from src.primitives.Vertex import Vertex
 
 
 class Function(ABC):
     @classmethod
-    def __call__(cls, *args) -> Vertex:
+    def __call__(cls, *args) -> "Vertex":
         z = cls.forward(*args)
 
         # Add paranets and backwards function for backprop
@@ -15,7 +18,7 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def forward(*args) -> Vertex:
+    def forward(*args) -> "Vertex":
         raise NotImplementedError
 
     @staticmethod
