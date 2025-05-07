@@ -61,19 +61,29 @@ class Vertex:
 
         dfs(self)
 
-    def __add__(self, other: Self) -> Self:
+    def __add__(self, other: Self | float) -> Self:
+        if isinstance(other, float):
+            other = type(self)(other)
         return add(self, other)
 
-    def __sub__(self, other: Self) -> Self:
+    def __sub__(self, other: Self | float) -> Self:
+        if isinstance(other, float):
+            other = type(self)(other)
         return sub(self, other)
 
-    def __mul__(self, other: Self) -> Self:
+    def __mul__(self, other: Self | float) -> Self:
+        if isinstance(other, float):
+            other = type(self)(other)
         return mul(self, other)
 
-    def __truediv__(self, other: Self) -> Self:
+    def __truediv__(self, other: Self | float) -> Self:
+        if isinstance(other, float):
+            other = type(self)(other)
         return div(self, other)
 
-    def __pow__(self, other: Self) -> Self:
+    def __pow__(self, other: Self | float) -> Self:
+        if isinstance(other, float):
+            other = type(self)(other)
         return pow(self, other)
 
     def __neg__(self) -> Self:
