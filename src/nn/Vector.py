@@ -19,7 +19,6 @@ class Vector(Sequence):
             parsed_args = list(args[0])
         else:
             parsed_args = list(args)
-        del args
 
         for i in range(len(parsed_args)):
             if isinstance(parsed_args[i], Vertex):
@@ -31,13 +30,16 @@ class Vector(Sequence):
                     "All passed arguments must be either of type Vertex or float."
                 )
 
-        self._data = tuple(parsed_args)
+        self._data: tuple[Vertex, ...] = tuple(parsed_args)
 
     def __getitem__(self, item: int) -> Vertex:
         return self._data[item]
 
     def __len__(self) -> int:
         return len(self._data)
+
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self._data})"
 
     def _element_wise_operation(
         self, other: Self | float, op: Callable[[Vertex, Vertex], Vertex]
