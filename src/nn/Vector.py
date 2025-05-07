@@ -3,6 +3,7 @@ import typing
 from operator import add, sub, mul, truediv
 from typing import Callable
 from typing import Self
+import src.functions.functions as F
 
 from src.auto import Vertex
 
@@ -86,3 +87,6 @@ class Vector(Sequence):
 
     def __neg__(self) -> Self:
         return type(self)([-v for v in self._data])
+
+    def dot(self, other: Self) -> Vertex:
+        return F.add(*(self * other))

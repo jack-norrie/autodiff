@@ -182,5 +182,57 @@ class TestNeg:
         assert len(result) == 3
 
 
+class TestDot:
+    def test_dot_product(self):
+        u = Vector(1.0, 2.0, 3.0)
+        v = Vector(4.0, 5.0, 6.0)
+
+        result = u.dot(v)
+        assert result.value == 32.0
+
+    def test_dot_product_zero_vector(self):
+        u = Vector(0.0, 0.0, 0.0)
+        v = Vector(4.0, 5.0, 6.0)
+
+        result = u.dot(v)
+        assert result.value == 0.0
+
+    def test_dot_product_orthogonal_vectors(self):
+        u = Vector(1.0, 0.0, 0.0)
+        v = Vector(0.0, 1.0, 0.0)
+
+        result = u.dot(v)
+        assert result.value == 0.0
+
+    def test_dot_product_backward(self):
+        u = Vector(2.0, 3.0)
+        v = Vector(4.0, 5.0)
+
+        z = u.dot(v)
+        z.backward()
+
+        assert u[0].grad == 4.0
+        assert u[1].grad == 5.0
+
+        assert v[0].grad == 2.0
+        assert v[1].grad == 3.0
+
+    def test_dot_product_in_expression(self):
+        u = Vector(1.0, 2.0)
+        v = Vector(3.0, 4.0)
+
+        from src.auto.Vertex import Vertex
+
+        z = u.dot(v) + Vertex(5.0)
+        assert z.value == 11.0 + 5.0
+
+    def test_dot_product_incompatible_shapes(self):
+        u = Vector(1.0, 2.0, 3.0)
+        v = Vector(4.0, 5.0)
+
+        with pytest.raises(ValueError):
+            u.dot(v)
+
+
 if __name__ == "__main__":
     pytest.main([__file__])
