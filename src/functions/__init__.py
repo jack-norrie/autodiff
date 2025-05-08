@@ -1,3 +1,3 @@
-from .functions import add, mult, square
+from .functions import add, mult, square, sin, cos, tan, exp
 
-__all__ = ["add", "mult", "square"]
+__all__ = ["add", "mult", "square", "sin", "cos", "tan", "exp"]

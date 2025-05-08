@@ -1,4 +1,6 @@
+import math
 from math import prod
+
 from src.auto.Function import Function
 from src.auto.Vertex import Vertex
 
@@ -53,3 +55,73 @@ class Square(Function):
 
 
 square = Square()
+
+
+class Sin(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(math.sin(v.value))
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (math.cos(v.value),)
+
+
+sin = Sin()
+
+
+class Cos(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(math.cos(v.value))
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (-math.sin(v.value),)
+
+
+cos = Cos()
+
+
+class Tan(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(math.tan(v.value))
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (1 / (math.cos(v.value) ** 2),)
+
+
+tan = Tan()
+
+
+class Exp(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(math.exp(v.value))
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (math.exp(v.value),)
+
+
+exp = Exp()
+
+
+class Log(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(math.log(v.value))
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (1 / v.value,)
+
+
+log = Log()
