@@ -43,9 +43,9 @@ class Vector(Sequence):
         return f"{type(self).__name__}({self._data})"
 
     def _element_wise_operation(
-        self, other: Self | float, op: Callable[[Vertex, Vertex], Vertex]
+        self, other: Self | float | int, op: Callable[[Vertex, Vertex], Vertex]
     ) -> Self:
-        if isinstance(other, float):
+        if isinstance(other, float) or isinstance(other, int):
             other = type(self)([Vertex(other)] * len(self))  # n references
         other = typing.cast(Self, other)
 
@@ -61,25 +61,25 @@ class Vector(Sequence):
 
         return type(self)(out)
 
-    def __add__(self, other: Self | float) -> Self:
+    def __add__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, add)
 
     def __radd__(self, other: float) -> Self:
         return self._element_wise_operation(other, add)
 
-    def __sub__(self, other: Self | float) -> Self:
+    def __sub__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, sub)
 
     def __rsub__(self, other: float) -> Self:
         return type(self)([Vertex(other) - v for v in self])
 
-    def __mul__(self, other: Self | float) -> Self:
+    def __mul__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, mul)
 
-    def __rmul__(self, other: float) -> Self:
+    def __rmul__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, mul)
 
-    def __truediv__(self, other: Self | float) -> Self:
+    def __truediv__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, truediv)
 
     def __rtruediv__(self, other: float) -> Self:

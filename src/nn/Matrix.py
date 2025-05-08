@@ -41,6 +41,9 @@ class Matrix(Sequence):
             Vector(tuple(row[c] for row in parsed)) for c in range(n)
         )
 
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self._rows})"
+
     @overload
     def __getitem__(self, key: int) -> Vector: ...
 
@@ -65,9 +68,9 @@ class Matrix(Sequence):
         return len(self._rows), len(self._rows[0])
 
     def _element_wise_operation(
-        self, other: Self | float, op: Callable[[Vector, Vector], Vector]
+        self, other: Self | float | int, op: Callable[[Vector, Vector], Vector]
     ) -> Self:
-        if isinstance(other, float):
+        if isinstance(other, float) or isinstance(other, int):
             n_rows, n_cols = self.shape
             other = type(self)([Vector([(other)] * n_cols)] * n_rows)  # n references
         other = typing.cast(Self, other)
@@ -84,25 +87,25 @@ class Matrix(Sequence):
 
         return type(self)(out)
 
-    def __add__(self, other: Self | float) -> Self:
+    def __add__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, add)
 
     def __radd__(self, other: float) -> Self:
         return self._element_wise_operation(other, add)
 
-    def __sub__(self, other: Self | float) -> Self:
+    def __sub__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, sub)
 
     def __rsub__(self, other: float) -> Self:
         return type(self)([other - v for v in self])
 
-    def __mul__(self, other: Self | float) -> Self:
+    def __mul__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, mul)
 
     def __rmul__(self, other: float) -> Self:
         return self._element_wise_operation(other, mul)
 
-    def __truediv__(self, other: Self | float) -> Self:
+    def __truediv__(self, other: Self | float | int) -> Self:
         return self._element_wise_operation(other, truediv)
 
     def __rtruediv__(self, other: float) -> Self:

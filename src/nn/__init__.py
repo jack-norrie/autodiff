@@ -1,2 +1,2 @@
-# from .Component import Linear, Sequential
-# from .activation import relu
+from .Vector import Vector
+from .Matrix import Matrix

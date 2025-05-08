@@ -1,24 +1,25 @@
 import math
 import typing
 from abc import abstractmethod
+from collections.abc import Sequence
 
-from src.primitives import Vertex
+from src.auto import Vertex
 
 
 class Optimizer:
     def __init__(self, parameters: dict, nu: float = 0.01, *args, **kwargs) -> None:
         self.parameters = parameters
-
         self.opt_parameters = self.init_opt_parameters()
 
         self.nu = nu
+        self.t = 1
 
     @abstractmethod
     def init_opt_parameter(self) -> dict:
         raise NotImplementedError
 
     def init_opt_parameters(self):
-        def dfs(parameters: dict | list | Vertex) -> dict | list:
+        def dfs(parameters: dict | Sequence | Vertex) -> dict | list:
             if isinstance(parameters, dict):
                 opt_parameters = {}
                 opt_parameters = typing.cast(dict, opt_parameters)
@@ -29,7 +30,7 @@ class Optimizer:
                     else:
                         opt_parameters[k] = dfs(v)
 
-            elif isinstance(parameters, list):
+            elif isinstance(parameters, Sequence):
                 opt_parameters = [None for _ in range(len(parameters))]
                 opt_parameters = typing.cast(list, opt_parameters)
 
@@ -57,7 +58,9 @@ class Optimizer:
             if isinstance(parameters, dict) and isinstance(opt_parameters, dict):
                 for k in parameters:
                     opt(parameters[k], opt_parameters[k])
-            elif isinstance(parameters, list) and isinstance(opt_parameters, list):
+            elif isinstance(parameters, Sequence) and isinstance(
+                opt_parameters, Sequence
+            ):
                 for p, q in zip(parameters, opt_parameters):
                     opt(p, q)
             elif isinstance(parameters, Vertex):
@@ -68,6 +71,7 @@ class Optimizer:
                 )
 
         opt(self.parameters, self.opt_parameters)
+        self.t += 1
 
 
 class SGD(Optimizer):
@@ -128,12 +132,11 @@ class Adam(Optimizer):
         parameters: dict,
         nu: float = 0.01,
         beta_1: float = 0.9,
-        beta_2: float = 0.9,
+        beta_2: float = 0.999,
     ) -> None:
         super().__init__(parameters, nu)
         self.beta_1 = beta_1
         self.beta_2 = beta_2
-        self.t = 1
 
     def init_opt_parameter(self) -> dict:
         return {"moment_1": 0.0, "moment_2": 0.0}
@@ -154,4 +157,3 @@ class Adam(Optimizer):
         delta = -self.nu * m1 / (math.sqrt(m2) + 1e-8)
 
         parameter.value += delta
-        self.t += 1
