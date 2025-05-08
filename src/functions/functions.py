@@ -39,3 +39,17 @@ class Mult(Function):
 
 
 mult = Mult()
+
+
+class Square(Function):
+    @staticmethod
+    def forward(v: Vertex) -> Vertex:
+        z = Vertex(v.value**2)
+        return z
+
+    @staticmethod
+    def backward(v: Vertex) -> tuple[float, ...]:
+        return (2 * v.value,)
+
+
+square = Square()

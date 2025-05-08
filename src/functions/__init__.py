@@ -1,3 +1,3 @@
-from .functions import add, mult
+from .functions import add, mult, square
 
-__all__ = ["add", "mult"]
+__all__ = ["add", "mult", "square"]
