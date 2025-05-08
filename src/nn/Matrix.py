@@ -1,3 +1,4 @@
+from re import S
 import typing
 from collections.abc import Sequence
 from operator import add, mul, sub, truediv
@@ -8,7 +9,7 @@ from src.nn.Vector import Vector
 
 
 class Matrix(Sequence):
-    def __init__(self, data: Sequence[Sequence[float | Vector]]):
+    def __init__(self, data: Sequence[Sequence[float | Vertex]]):
         assert len(data) > 0, "At least one row of data must be supplied."
         m = len(data)
 
@@ -20,18 +21,20 @@ class Matrix(Sequence):
         )
         n = cols.pop()
 
-        parsed = [[None for _ in range(n)] for _ in range(m)]
+        parsed = []
         for r in range(m):
+            row = []
             for c in range(n):
                 item = data[r][c]
                 if isinstance(item, Vertex):
-                    parsed[r][c] = item
+                    row.append(item)
                 elif isinstance(item, float):
-                    parsed[r][c] = Vertex(item)
+                    row.append(Vertex(item))
                 else:
                     raise ValueError(
                         "All passed arguments must be either of type Vertex or float."
                     )
+            parsed.append(row)
 
         self._rows: tuple[Vector, ...] = tuple(Vector(row) for row in parsed)
         self._cols: tuple[Vector, ...] = tuple(
@@ -108,18 +111,29 @@ class Matrix(Sequence):
     def __neg__(self) -> Self:
         return type(self)([-v for v in self._rows])
 
-    def __matmul__(self, other: Self | Vector) -> Self:
-        if isinstance(other, Vector):
+    @overload
+    def __matmul__(self, other: Vector) -> Vector: ...
+
+    @overload
+    def __matmul__(self, other: Self) -> Self: ...
+
+    def __matmul__(self, other: Self | Vector) -> Self | Vector:
+        is_vec = isinstance(other, Vector)
+        if is_vec:
             other = type(self)([[v] for v in other])
-        other = typing.cast(Self, other)
 
         n, k1 = self.shape
         k2, m = other.shape
         assert k1 == k2, f"Incompatible matrix multiplication dims {k1}!={k2}"
 
-        out = [[None for _ in range(m)] for _ in range(n)]
+        out = []
         for r in range(n):
+            row = []
             for c in range(m):
-                out[r][c] = self._rows[r].dot(other._cols[c])
+                row.append(self._rows[r].dot(other._cols[c]))
+            out.append(row)
+
+        if is_vec:
+            return Vector([v[0] for v in out])
 
         return type(self)(out)

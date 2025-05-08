@@ -1,3 +1,4 @@
+from numpy import isin
 from src.nn.Matrix import Matrix
 from src.nn.Vector import Vector
 from src.auto import Vertex
@@ -230,10 +231,10 @@ class TestMatMul:
         v = Vector(5.0, 6.0)
         result = m @ v
 
-        assert result[0, 0].value == 17.0
-        assert result[1, 0].value == 39.0
+        assert isinstance(result, Vector)
+        assert result[0].value == 17.0
+        assert result[1].value == 39.0
         assert len(result) == 2
-        assert result.shape == (2, 1)
 
     def test_non_square_matrix_mul(self):
         m1 = Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
