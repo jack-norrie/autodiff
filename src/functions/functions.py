@@ -41,17 +41,6 @@ class Mult(Function):
 mult = Mult()
 
 
-# def vec_dot(u: Vector, v: Vector) -> Vertex:
-#     assert len(u) == len(v), f"Incompatible shapes: {len(u)} and {len(v)}"
-#     n = len(u)
-#
-#     w = mul(u[0], v[0])
-#     for i in range(1, n):
-#         w = add(w, mul(u[i], v[i]))
-#
-#     return w
-#
-#
 # def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
 #     if isinstance(B[0], Vertex):
 #         B = typing.cast(Vector, B)
@@ -78,13 +67,3 @@ mult = Mult()
 #     return C
 #
 #
-# def vec_add(u: Vector, v: Vector) -> Vector:
-#     assert len(u) == len(v), f"Incompatible shapes: {len(u)} and {len(v)}"
-#     n = len(u)
-#
-#     w = [None for _ in range(n)]
-#     for i in range(n):
-#         w[i] = add(u[i], v[i])
-#     w = typing.cast(Vector, w)
-#
-#     return w
