@@ -1,4 +1,3 @@
-from re import S
 import typing
 from collections.abc import Sequence
 from operator import add, mul, sub, truediv

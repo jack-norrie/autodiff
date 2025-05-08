@@ -3,13 +3,9 @@ import random
 
 import matplotlib.pyplot as plt
 
-from src.nn.Vector import Vector
 from src.auto import Vertex
 from src.functions import square
-from src.nn import Matrix
-from src.nn.activation import relu
-from src.nn.components import Linear, Sequential
-from src.nn.optim import Adam, MomentumSGD
+from src.nn import Adam, Linear, Matrix, Sequential, Vector, tanh, He
 
 
 def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
@@ -67,15 +63,15 @@ def non_linear_data_gen_experiment():
     h = 10
     model = Sequential(
         [
-            Linear(1, h, activation=relu, seed=1),
-            Linear(h, h, activation=relu, seed=2),
-            Linear(h, h, activation=relu, seed=3),
-            Linear(h, h, activation=relu, seed=4),
-            Linear(h, h, activation=relu, seed=5),
-            Linear(h, h, activation=relu, seed=6),
-            Linear(h, h, activation=relu, seed=7),
-            Linear(h, h, activation=relu, seed=8),
-            Linear(h, h, activation=relu, seed=9),
+            Linear(1, h, activation=tanh, weight_initialiser=He(), seed=1),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=2),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=3),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=4),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=5),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=6),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=7),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=8),
+            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=9),
             Linear(h, 1, seed=5),
         ]
     )
