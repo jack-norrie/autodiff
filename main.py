@@ -64,18 +64,25 @@ def non_linear_data_gen_experiment():
     noise = Vector([random.gauss(0, 0.1) for _ in range(n)])
     y = y + noise
 
-    h = 100
+    h = 10
     model = Sequential(
         [
             Linear(1, h, activation=relu, seed=1),
             Linear(h, h, activation=relu, seed=2),
+            Linear(h, h, activation=relu, seed=3),
+            Linear(h, h, activation=relu, seed=4),
+            Linear(h, h, activation=relu, seed=5),
+            Linear(h, h, activation=relu, seed=6),
+            Linear(h, h, activation=relu, seed=7),
+            Linear(h, h, activation=relu, seed=8),
+            Linear(h, h, activation=relu, seed=9),
             Linear(h, 1, seed=5),
         ]
     )
 
-    opt = MomentumSGD(model.parameters, nu=0.1, momentum=0.9)
+    opt = Adam(model.parameters, nu=0.001, beta_1=0.9, beta_2=0.999)
 
-    epochs = 1000
+    epochs = 100
     for i in range(1, epochs + 1):
         loss_total = 0
         for j in range(n):
@@ -136,8 +143,8 @@ def non_linear_data_gen_experiment():
 
 
 def main():
-    linear_data_gen_experiment()
-    # non_linear_data_gen_experiment()
+    # linear_data_gen_experiment()
+    non_linear_data_gen_experiment()
 
 
 if __name__ == "__main__":
