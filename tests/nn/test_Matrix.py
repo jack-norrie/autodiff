@@ -212,5 +212,53 @@ class TestNeg:
         assert result.shape == (2, 2)
 
 
+class TestMatMul:
+    def test_matrix_matrix_mul(self):
+        m1 = Matrix([[1.0, 2.0], [3.0, 4.0]])
+        m2 = Matrix([[5.0, 6.0], [7.0, 8.0]])
+        result = m1 @ m2
+
+        assert result[0, 0].value == 19.0
+        assert result[0, 1].value == 22.0
+        assert result[1, 0].value == 43.0
+        assert result[1, 1].value == 50.0
+        assert len(result) == 2
+        assert result.shape == (2, 2)
+
+    def test_matrix_vector_mul(self):
+        m = Matrix([[1.0, 2.0], [3.0, 4.0]])
+        v = Vector(5.0, 6.0)
+        result = m @ v
+
+        assert result[0, 0].value == 17.0
+        assert result[1, 0].value == 39.0
+        assert len(result) == 2
+        assert result.shape == (2, 1)
+
+    def test_non_square_matrix_mul(self):
+        m1 = Matrix([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
+        m2 = Matrix([[7.0], [8.0], [9.0]])
+        result = m1 @ m2
+
+        assert result[0, 0].value == 50.0
+        assert result[1, 0].value == 122.0
+        assert len(result) == 2
+        assert result.shape == (2, 1)
+
+    def test_incompatible_dimensions(self):
+        m1 = Matrix([[1.0, 2.0], [3.0, 4.0]])
+        m2 = Matrix([[5.0, 6.0, 7.0], [8.0, 9.0, 10.0]])
+
+        with pytest.raises(AssertionError):
+            _ = m2 @ m1
+
+    def test_vector_with_wrong_dimension(self):
+        m = Matrix([[1.0, 2.0], [3.0, 4.0]])
+        v = Vector(5.0, 6.0, 7.0)
+
+        with pytest.raises(AssertionError):
+            _ = m @ v
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

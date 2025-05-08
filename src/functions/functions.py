@@ -39,31 +39,3 @@ class Mult(Function):
 
 
 mult = Mult()
-
-
-# def mat_mul(A: Matrix, B: Matrix | Vector) -> Matrix | Vector:
-#     if isinstance(B[0], Vertex):
-#         B = typing.cast(Vector, B)
-#         B = [[v] for v in B]
-#     B = typing.cast(Matrix, B)
-#
-#     assert len(A[0]) == len(B), f"Incompatible shapes: {len(A[0])} and {len(B)}"
-#     m = len(A)
-#     n = len(B[0])
-#
-#     C = [[None for _ in range(n)] for _ in range(m)]
-#     for i in range(m):
-#         for j in range(n):
-#             z = mul(A[i][0], B[0][j])
-#             for k in range(1, len(B)):
-#                 z = add(z, mul(A[i][k], B[k][j]))
-#             C[i][j] = z
-#
-#     if len(B[0]) == 1:
-#         C = [row[0] for row in C]
-#         C = typing.cast(Vector, C)
-#     else:
-#         C = typing.cast(Matrix, C)
-#     return C
-#
-#

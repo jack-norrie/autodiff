@@ -34,6 +34,9 @@ class Matrix(Sequence):
                     )
 
         self._rows: tuple[Vector, ...] = tuple(Vector(row) for row in parsed)
+        self._cols: tuple[Vector, ...] = tuple(
+            Vector(tuple(row[c] for row in parsed)) for c in range(n)
+        )
 
     @overload
     def __getitem__(self, key: int) -> Vector: ...
@@ -104,3 +107,19 @@ class Matrix(Sequence):
 
     def __neg__(self) -> Self:
         return type(self)([-v for v in self._rows])
+
+    def __matmul__(self, other: Self | Vector) -> Self:
+        if isinstance(other, Vector):
+            other = type(self)([[v] for v in other])
+        other = typing.cast(Self, other)
+
+        n, k1 = self.shape
+        k2, m = other.shape
+        assert k1 == k2, f"Incompatible matrix multiplication dims {k1}!={k2}"
+
+        out = [[None for _ in range(m)] for _ in range(n)]
+        for r in range(n):
+            for c in range(m):
+                out[r][c] = self._rows[r].dot(other._cols[c])
+
+        return type(self)(out)
