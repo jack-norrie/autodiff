@@ -1,4 +1,35 @@
+import math
 from src.auto import Function, Vertex
+
+
+class Sigmoid(Function):
+    @staticmethod
+    def forward(x: Vertex) -> Vertex:
+        return Vertex(1.0 / (1.0 + math.exp(-x.value)))
+
+    @staticmethod
+    def backward(x: Vertex) -> tuple[float]:
+        # sigmoid'(x) = sigmoid(x) * (1 - sigmoid(x))
+        sig_x = 1.0 / (1.0 + math.exp(-x.value))
+        return (sig_x * (1.0 - sig_x),)
+
+
+sigmoid = Sigmoid()
+
+
+class Tanh(Function):
+    @staticmethod
+    def forward(x: Vertex) -> Vertex:
+        return Vertex(math.tanh(x.value))
+
+    @staticmethod
+    def backward(x: Vertex) -> tuple[float]:
+        # tanh'(x) = 1 - tanh²(x)
+        tanh_x = math.tanh(x.value)
+        return (1.0 - tanh_x * tanh_x,)
+
+
+tanh = Tanh()
 
 
 class ReLU(Function):
