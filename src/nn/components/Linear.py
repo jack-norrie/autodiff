@@ -10,6 +10,13 @@ from src.nn.initialisers import WeightInitialiser, He
 
 
 class Linear(Component):
+    """
+    A linear (fully connected) layer in a neural network.
+
+    This layer performs a linear transformation: y = Wx + b,
+    optionally followed by an activation function.
+    """
+
     def __init__(
         self,
         in_dim,
@@ -19,6 +26,17 @@ class Linear(Component):
         weight_initialiser: WeightInitialiser = He(),
         seed: int = 42,
     ) -> None:
+        """
+        Initialize a linear layer.
+
+        Args:
+            in_dim: Input dimension
+            out_dim: Output dimension
+            bias: Whether to include a bias term
+            activation: Optional activation function to apply
+            weight_initialiser: Strategy for initializing weights
+            seed: Random seed for reproducibility
+        """
         super().__init__()
 
         random.seed(seed)

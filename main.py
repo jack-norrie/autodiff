@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from src.auto import Vertex
 from src.functions import square
-from src.nn import Adam, Linear, Matrix, Sequential, Vector, tanh, He
+from src.nn import Adam, Linear, Matrix, Sequential, Vector, relu, He, MomentumSGD
 
 
 def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
@@ -13,6 +13,16 @@ def loss_fn(y_pred: Vertex, y: Vertex) -> Vertex:
 
 
 def linear_data_gen_experiment():
+    """
+    Run an experiment to fit a linear model to synthetically generated linear data.
+
+    This function:
+    1. Generates random linear data with noise
+    2. Creates a linear model
+    3. Trains the model using Adam optimizer
+    4. Prints the loss for each epoch
+    5. Compares the true parameters with the learned parameters
+    """
     random.seed(42)
     m = 5
     n = 10_000
@@ -24,9 +34,9 @@ def linear_data_gen_experiment():
 
     model = Sequential([Linear(m, 1, bias=False)])
 
-    opt = Adam(model.parameters, nu=0.001, beta_1=0.9, beta_2=0.999)
+    opt = MomentumSGD(model.parameters, nu=0.01, momentum=0.9)
 
-    epochs = 10
+    epochs = 100
     for i in range(1, epochs + 1):
         loss_total = 0
         for j in range(n):
@@ -46,6 +56,16 @@ def linear_data_gen_experiment():
 
 
 def non_linear_data_gen_experiment():
+    """
+    Run an experiment to fit a deep neural network to synthetically generated non-linear data.
+
+    This function:
+    1. Generates random non-linear data with noise using a piecewise function
+    2. Creates a deep neural network with multiple relu activation layers
+    3. Trains the model using Adam optimizer
+    4. Prints the loss for each epoch
+    5. Visualizes the true function, training data, and model predictions
+    """
     random.seed(42)
     n = 1000
     X = Matrix([[random.uniform(-1, 1)] for i in range(n)])
@@ -63,15 +83,15 @@ def non_linear_data_gen_experiment():
     h = 10
     model = Sequential(
         [
-            Linear(1, h, activation=tanh, weight_initialiser=He(), seed=1),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=2),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=3),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=4),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=5),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=6),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=7),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=8),
-            Linear(h, h, activation=tanh, weight_initialiser=He(), seed=9),
+            Linear(1, h, activation=relu, weight_initialiser=He(), seed=1),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=2),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=3),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=4),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=5),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=6),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=7),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=8),
+            Linear(h, h, activation=relu, weight_initialiser=He(), seed=9),
             Linear(h, 1, seed=5),
         ]
     )
@@ -139,7 +159,7 @@ def non_linear_data_gen_experiment():
 
 
 def main():
-    # linear_data_gen_experiment()
+    linear_data_gen_experiment()
     non_linear_data_gen_experiment()
 
 

@@ -5,12 +5,28 @@ from src.auto.Function import Function
 
 
 class Vertex:
+    """
+    The core class for automatic differentiation in the computational graph.
+
+    A Vertex represents a node in the computational graph, storing both the value
+    and gradient information. It supports automatic differentiation through the
+    backward method and provides operator overloading for arithmetic operations.
+    """
+
     def __init__(
         self,
         value: float,
         _parents: tuple[Self, ...] | None = None,
         _backward: Callable[[tuple[Self, ...]], tuple[float, ...]] | None = None,
     ):
+        """
+        Initialize a Vertex with a value and optional parent nodes.
+
+        Args:
+            value: The scalar value of this vertex
+            _parents: Parent vertices in the computational graph
+            _backward: Function to compute gradients with respect to parents
+        """
         self.value = value
         self.grad = 0
 
@@ -19,9 +35,24 @@ class Vertex:
         self._backward = lambda *n: (0,) if _backward is None else _backward
 
     def __repr__(self) -> str:
+        """
+        Return a string representation of the Vertex.
+
+        Returns:
+            str: String representation including the class name and value
+        """
         return f"{type(self).__name__}({repr(self.value)})"
 
     def _get_topo_sort(self, topo_sort: list[Self], seen: set[Self]) -> None:
+        """
+        Helper method for topological sorting of the computational graph.
+
+        Performs a depth-first search to build a topological ordering.
+
+        Args:
+            topo_sort: List to store the topological ordering
+            seen: Set of already visited vertices
+        """
         seen.add(self)
         for parent in self._parents:
             if parent not in seen:
@@ -29,6 +60,12 @@ class Vertex:
         topo_sort.append(self)
 
     def get_topo_sort(self):
+        """
+        Get a topological sorting of the computational graph.
+
+        Returns:
+            list[Self]: Vertices in topological order (reversed for backpropagation)
+        """
         topo_sort: list[Self] = []
         seen: set[Self] = set()
 
@@ -37,6 +74,14 @@ class Vertex:
         return topo_sort[::-1]
 
     def backward(self):
+        """
+        Perform backpropagation to compute gradients through the computational graph.
+
+        This method:
+        1. Sets the gradient of this vertex to 1 (seed gradient)
+        2. Traverses the computational graph in topological order
+        3. Computes and accumulates gradients for all parent vertices
+        """
         # Set the top level node gradient to one, i.e. its gradient with respect to itself
         self.grad = 1
 
@@ -49,6 +94,12 @@ class Vertex:
                 v.grad += u.grad * node_grad
 
     def zero_grad(self):
+        """
+        Reset all gradients in the computational graph to zero.
+
+        This method performs a depth-first traversal of the computational graph
+        and sets the gradient of each vertex to zero.
+        """
         seen = set()
 
         def dfs(root: Self):
