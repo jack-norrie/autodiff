@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 import typing
+from typing import overload
 
 if typing.TYPE_CHECKING:
+    # Avoid circular depdency, since Vertex needs to implement Functions
     from src.auto.Vertex import Vertex
 
 
@@ -14,7 +16,7 @@ class Function(ABC):
     """
 
     @classmethod
-    def __call__(cls, *args) -> "Vertex":
+    def __call__(cls, *args: "Vertex") -> "Vertex":
         """
         Call the function on the given arguments.
 
@@ -31,7 +33,7 @@ class Function(ABC):
         """
         z = cls.forward(*args)
 
-        # Add paranets and backwards function for backprop
+        # Add parents and backwards function for backprop
         z._parents = args
         z._backward = cls.backward
 
@@ -39,7 +41,7 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def forward(*args) -> "Vertex":
+    def forward(*args: "Vertex") -> "Vertex":
         """
         Perform the forward computation of the function.
 
@@ -53,7 +55,7 @@ class Function(ABC):
 
     @staticmethod
     @abstractmethod
-    def backward(*args) -> tuple[float, ...]:
+    def backward(*args: "Vertex") -> tuple[float, ...]:
         """
         Compute the gradients of the function with respect to its inputs.
 

@@ -32,7 +32,11 @@ class Vertex:
 
         # Implementation detials for backpropogation - _backward produces node wise gradients per _parent
         self._parents = tuple() if _parents is None else _parents
-        self._backward = lambda *n: (0,) if _backward is None else _backward
+        self._backward = (
+            lambda *args: tuple(0.0 for _ in range(len(args)))
+            if _backward is None
+            else _backward
+        )
 
     def __repr__(self) -> str:
         """
@@ -117,23 +121,23 @@ class Vertex:
             other = type(self)(other)
         return other
 
-    def __add__(self, other: Self | float | int) -> Self:
+    def __add__(self, other: Self | float | int) -> "Vertex":
         other = self._parse_other(other)
         return add(self, other)
 
-    def __sub__(self, other: Self | float | int) -> Self:
+    def __sub__(self, other: Self | float | int) -> "Vertex":
         other = self._parse_other(other)
         return sub(self, other)
 
-    def __mul__(self, other: Self | float | int) -> Self:
+    def __mul__(self, other: Self | float | int) -> "Vertex":
         other = self._parse_other(other)
         return mul(self, other)
 
-    def __truediv__(self, other: Self | float | int) -> Self:
+    def __truediv__(self, other: Self | float | int) -> "Vertex":
         other = self._parse_other(other)
         return div(self, other)
 
-    def __neg__(self) -> Self:
+    def __neg__(self) -> "Vertex":
         return neg(self)
 
 

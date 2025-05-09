@@ -50,7 +50,7 @@ class Square(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (2 * v.value,)
 
 
@@ -64,7 +64,7 @@ class Sin(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (math.cos(v.value),)
 
 
@@ -78,7 +78,7 @@ class Cos(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (-math.sin(v.value),)
 
 
@@ -92,7 +92,7 @@ class Tan(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (1 / (math.cos(v.value) ** 2),)
 
 
@@ -106,7 +106,7 @@ class Exp(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (math.exp(v.value),)
 
 
@@ -120,7 +120,7 @@ class Log(Function):
         return z
 
     @staticmethod
-    def backward(v: Vertex) -> tuple[float, ...]:
+    def backward(v: Vertex) -> tuple[float]:
         return (1 / v.value,)
 
 

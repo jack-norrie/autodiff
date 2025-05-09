@@ -9,7 +9,6 @@ class Sigmoid(Function):
 
     @staticmethod
     def backward(x: Vertex) -> tuple[float]:
-        # sigmoid'(x) = sigmoid(x) * (1 - sigmoid(x))
         sig_x = 1.0 / (1.0 + math.exp(-x.value))
         return (sig_x * (1.0 - sig_x),)
 
@@ -24,7 +23,6 @@ class Tanh(Function):
 
     @staticmethod
     def backward(x: Vertex) -> tuple[float]:
-        # tanh'(x) = 1 - tanh²(x)
         tanh_x = math.tanh(x.value)
         return (1.0 - tanh_x * tanh_x,)
 
