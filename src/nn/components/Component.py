@@ -1,9 +1,9 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 from src.nn import Vector
 
 
-class Component:
+class Component(ABC):
     """
     Base class for all neural network components.
 
