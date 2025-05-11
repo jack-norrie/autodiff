@@ -51,8 +51,9 @@ def linear_data_gen_experiment():
 
         print(f"{i} / {epochs} - {loss_total=}")
 
-    print(f"beta: {beta}")
-    print(f"W: {model.parameters['0']['W'][0]}")
+    print("True Parameter - Learned Parameter")
+    for true_param, learned_param in zip(beta, model.parameters["0"]["W"][0]):
+        print(f"{true_param} - {learned_param}")
 
 
 def non_linear_data_gen_experiment():
